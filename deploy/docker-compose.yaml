@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  postgres-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=imagegram
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ../database/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+volumes:
+  db:
+    name: 'imagegram-postgres-db'
+    driver: local
