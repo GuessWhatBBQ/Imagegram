@@ -13,14 +13,13 @@ namespace Imagegram.Controllers;
 [Route("[controller]")]
 public class PostController : ControllerBase
 {
-
     private readonly ILogger<UserController> _logger;
-    private readonly ApiContext db = default!;
+    private readonly PostgresContext db = default!;
     private readonly PostService PostService = default!;
 
-    public PostController(ILogger<UserController> logger, DbContextOptions<ApiContext> options)
+    public PostController(ILogger<UserController> logger, DbContextOptions<PostgresContext> options)
     {
-        db = new ApiContext(options);
+        db = new PostgresContext(options);
         _logger = logger;
         PostService = new PostService(options);
     }
@@ -28,7 +27,9 @@ public class PostController : ControllerBase
     [HttpGet("")]
     public async Task<ActionResult<IEnumerable<ExistingPost>>> GetAllPostAsync()
     {
-        var Posts = (await PostService.GetAllPosts()).Select(post => new ExistingPost(post)).ToList() ?? new List<ExistingPost>();
+        var Posts =
+            (await PostService.GetAllPosts()).Select(post => new ExistingPost(post)).ToList()
+            ?? new List<ExistingPost>();
         return Ok(Posts);
     }
 

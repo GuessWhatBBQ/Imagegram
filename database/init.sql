@@ -24,17 +24,17 @@ CREATE TABLE image (
        postid INT REFERENCES post(id) NOT NULL
 );
 
-INSERT INTO users (username, fullname, password) VALUES ('tleneve0', 'Tiebout Leneve', 'bM6"e/gCo\');
-INSERT INTO users (username, fullname, password) VALUES ('ydurrad1', 'Yolande Durrad', 'jG8)0<tuK3W@rdX$');
-INSERT INTO users (username, fullname, password) VALUES ('smccome2', 'Shawnee McCome', 'dP6"IBt=ap');
-INSERT INTO users (username, fullname, password) VALUES ('drubinowitch3', 'Daffie Rubinowitch', 'iY3,kX>+jdJ(p1vh');
-INSERT INTO users (username, fullname, password) VALUES ('gkinny4', 'Gweneth Kinny', 'eF8%hkBi>tM@(ke');
-INSERT INTO users (username, fullname, password) VALUES ('llukehurst5', 'Loreen Lukehurst', 'yK5%!5~t');
-INSERT INTO users (username, fullname, password) VALUES ('hhalse6', 'Hildegarde Halse', 'rN6'',#+M');
-INSERT INTO users (username, fullname, password) VALUES ('ktether7', 'Kleon Tether', 'tA9,$NRt42=p7s1');
-INSERT INTO users (username, fullname, password) VALUES ('ahrachovec8', 'Alick Hrachovec', 'wO5%7AhR)E#`3');
-INSERT INTO users (username, fullname, password) VALUES ('dmourant9', 'Del Mourant', 'mJ2$p?lt|f`j..');
-INSERT INTO users (username, fullname, password) VALUES ('samin', 'Samin Islam', '1234');
+INSERT INTO users (username, fullname, password) VALUES ('tstelle0', 'Tobi Stelle', '$2a$04$u5q4MV7rJKZjWjQoLDk8YuusN9WnzgnrzjEr.DJkKnQQAh0EVO8rK');
+INSERT INTO users (username, fullname, password) VALUES ('cbabe1', 'Coriss Babe', '$2a$04$7Z6GflUoGbd54CAQX5yzmuoUQpcFUbWSAoKNVZ4QwjW44wfncFyUS');
+INSERT INTO users (username, fullname, password) VALUES ('hnaseby2', 'Heidie Naseby', '$2a$04$IQqVs9w2tMSOV7tWicM3Y.efuCAiIRhMgw/ymVDk9Sv1rImYgfTH.');
+INSERT INTO users (username, fullname, password) VALUES ('ecicetti3', 'Elia Cicetti', '$2a$04$pXINDufWH21pZ/x0ATp.x.YGl.6GVXVvyAuiTPUbKq95BS8eh.ALC');
+INSERT INTO users (username, fullname, password) VALUES ('cmoine4', 'Ceciley Moine', '$2a$04$s1Wn6Vs42uWGTpp1u/JTvO.MbZ137P5fnIYXLXtX5TgTOnW9FYE.i');
+INSERT INTO users (username, fullname, password) VALUES ('ctalboy5', 'Clayton Talboy', '$2a$04$LRr2C3854SQ5YTbfXWsuz.3sdk1XC65.dgDkwkhsHQrm/QQaqe2qi');
+INSERT INTO users (username, fullname, password) VALUES ('nharnell6', 'Nichols Harnell', '$2a$04$GrHPrceJ4Impg7Gbs9uFseDtpNjNYRXEvktvb7kLICqPQiNU1GcHq');
+INSERT INTO users (username, fullname, password) VALUES ('tboriston7', 'Tobe Boriston', '$2a$04$J/JVMxOpTqH2PCMsw6tvkOneUyPZULGJlmZVQl8jWCDdRL71WVzpu');
+INSERT INTO users (username, fullname, password) VALUES ('ltattersfield8', 'Luis Tattersfield', '$2a$04$.uFS9b.dOmpbzSTKGEnZeu6rswPAb3c6cbYb5qkVKLxJN0zkFNyTi');
+INSERT INTO users (username, fullname, password) VALUES ('dpillans9', 'Davis Pillans', '$2a$04$zqLdmgIjdwT.oV.DY.zIBeRTxCyDREeqopveBHr6y7lPIIt58AXwa');
+INSERT INTO users (username, fullname, password) VALUES ('samin', 'Samin Islam', '$2a$07$cCaKxEHp0RHyeEo8zPqTVeyeZnEPjaTHIppIIzBvqt7ekbr86tK5O');
 
 INSERT INTO sessions (userid, sessiontoken) VALUES (1, 'aa5877db-772d-4540-a57c-cacc6da007b6');
 INSERT INTO sessions (userid, sessiontoken) VALUES (7, '3a7670c2-7a71-42a4-8c80-5b063c9e0722');

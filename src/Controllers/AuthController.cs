@@ -17,13 +17,12 @@ namespace Imagegram.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-
     private readonly ILogger<UserController> _logger;
     private readonly SessionService SessionService;
     private readonly UserService UserService;
     private readonly HttpClient client;
 
-    public AuthController(ILogger<UserController> logger, DbContextOptions<ApiContext> options)
+    public AuthController(ILogger<UserController> logger, DbContextOptions<PostgresContext> options)
     {
         _logger = logger;
         SessionService = new SessionService(options);
@@ -48,11 +47,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpDelete("all")]
-    [Authorize(AuthenticationSchemes
-            = nameof(CustomAuthHandler))]
+    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
     public async Task<ActionResult<Session>> LogoutAllSessions(int id)
     {
-        Claim UserIdClaim = User.Claims.Where(claim => claim.Type == ClaimTypes.NameIdentifier).First();
+        Claim UserIdClaim = User.Claims
+            .Where(claim => claim.Type == ClaimTypes.NameIdentifier)
+            .First();
         int UserId = int.Parse(UserIdClaim.Value);
         try
         {
@@ -66,11 +66,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpDelete("")]
-    [Authorize(AuthenticationSchemes
-            = nameof(CustomAuthHandler))]
+    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
     public async Task<ActionResult<Session>> LogoutCurrentSession(int id)
     {
-        Claim SessionTokenClaim = User.Claims.Where(claim => claim.Type == CustomClaimTypes.SessionToken).First();
+        Claim SessionTokenClaim = User.Claims
+            .Where(claim => claim.Type == CustomClaimTypes.SessionToken)
+            .First();
         string SessionToken = SessionTokenClaim.Value;
         try
         {

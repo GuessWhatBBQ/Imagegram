@@ -8,7 +8,6 @@ public class NewPost
     public string Caption { get; set; } = default!;
     public IFormFile Image { get; set; } = default!;
 
-
     public void Deconstruct(out int creatorId, out string caption)
     {
         creatorId = CreatorId;
@@ -21,6 +20,7 @@ public class ExistingPost : NewPost
     public int PostId { get; set; }
 
     public ExistingPost() { }
+
     public ExistingPost(Post post)
     {
         (PostId, CreatorId, Caption) = post;
@@ -32,7 +32,6 @@ public class ExistingPost : NewPost
         creatorId = CreatorId;
         caption = Caption;
     }
-
 }
 
 public class PostMapper
@@ -46,12 +45,22 @@ public class PostMapper
     public static Post ToModel(ExistingPost post)
     {
         var (PostId, CreatorId, Caption) = post;
-        return new Post { PostId = PostId, CreatorId = CreatorId, Caption = Caption };
+        return new Post
+        {
+            PostId = PostId,
+            CreatorId = CreatorId,
+            Caption = Caption
+        };
     }
 
     public static ExistingPost FromModel(Post post)
     {
         var (PostId, CreatorId, Caption) = post;
-        return new ExistingPost { PostId = PostId, CreatorId = CreatorId, Caption = Caption };
+        return new ExistingPost
+        {
+            PostId = PostId,
+            CreatorId = CreatorId,
+            Caption = Caption
+        };
     }
 }

@@ -14,11 +14,10 @@ namespace Imagegram.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-
     private readonly ILogger<UserController> _logger;
     private readonly UserService UserService;
 
-    public UserController(ILogger<UserController> logger, DbContextOptions<ApiContext> options)
+    public UserController(ILogger<UserController> logger, DbContextOptions<PostgresContext> options)
     {
         _logger = logger;
         UserService = new UserService(options);
@@ -27,13 +26,14 @@ public class UserController : ControllerBase
     [HttpGet("")]
     public async Task<ActionResult<IEnumerable<ExistingUser>>> GetAllUsersAsync()
     {
-        var Users = (await UserService.GetAllUsers()).Select(user => new ExistingUser(user)).ToList();
+        var Users = (await UserService.GetAllUsers())
+            .Select(user => new ExistingUser(user))
+            .ToList();
         return Users;
     }
 
     [HttpGet("{id}")]
-    [Authorize(AuthenticationSchemes
-            = nameof(CustomAuthHandler))]
+    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
     public async Task<ActionResult<User>> GetUserAsync(int id)
     {
         try
@@ -48,10 +48,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<ActionResult<User>> CreateAccountAsync(NewUser user)
+    public async Task<ActionResult<ExistingUser>> CreateAccountAsync(NewUser user)
     {
-        User NewUser = UserMapper.ToModel(user);
-        await UserService.CreateNewUser(NewUser);
-        return NewUser;
+        var NewUser = await UserService.CreateNewUser(UserMapper.ToModel(user));
+        return UserMapper.ResponseFromModel(NewUser);
     }
 }

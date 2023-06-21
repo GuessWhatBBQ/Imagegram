@@ -12,16 +12,18 @@ using Microsoft.Extensions.Options;
 
 public class CustomAuthHandler : AuthenticationHandler<CustomAuthSchemeOptions>
 {
-    ApiContext db = default!;
+    PostgresContext db = default!;
+
     public CustomAuthHandler(
         IOptionsMonitor<CustomAuthSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock clock,
-        DbContextOptions<ApiContext> dboptions
-    ) : base(options, logger, encoder, clock)
+        DbContextOptions<PostgresContext> dboptions
+    )
+        : base(options, logger, encoder, clock)
     {
-        db = new ApiContext(dboptions);
+        db = new PostgresContext(dboptions);
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -34,15 +36,25 @@ public class CustomAuthHandler : AuthenticationHandler<CustomAuthSchemeOptions>
         Session session = default!;
         try
         {
-            session = await db.Sessions.Where(session => session.SessionToken == header).FirstOrDefaultAsync() ?? throw new SessionNotFoundException();
+            session =
+                await db.Sessions
+                    .Where(session => session.SessionToken == header)
+                    .FirstOrDefaultAsync() ?? throw new SessionNotFoundException();
         }
         catch (SessionNotFoundException)
         {
             return AuthenticateResult.Fail("Invalid Session Id");
         }
-        var claims = new[] { new Claim(ClaimTypes.NameIdentifier, session.UserId.ToString()), new Claim(CustomClaimTypes.SessionToken, session.SessionToken) };
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, session.UserId.ToString()),
+            new Claim(CustomClaimTypes.SessionToken, session.SessionToken)
+        };
         var claimsIdentity = new ClaimsIdentity(claims, nameof(CustomAuthHandler));
-        var ticket = new AuthenticationTicket(new ClaimsPrincipal(claimsIdentity), this.Scheme.Name);
+        var ticket = new AuthenticationTicket(
+            new ClaimsPrincipal(claimsIdentity),
+            this.Scheme.Name
+        );
         return AuthenticateResult.Success(ticket);
     }
 }

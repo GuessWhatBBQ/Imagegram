@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 public class PostService
 {
-    private readonly ApiContext db = default!;
-    public PostService(DbContextOptions<ApiContext> options)
+    private readonly PostgresContext db = default!;
+
+    public PostService(DbContextOptions<PostgresContext> options)
     {
-        db = new ApiContext(options);
+        db = new PostgresContext(options);
     }
 
     public async Task<IEnumerable<Post>> GetAllPosts()
