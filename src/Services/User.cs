@@ -73,6 +73,6 @@ public class UserService
 
     private bool isValidPassword(User user, AuthCredentials userCredentials)
     {
-        return BC.Verify(user.Password, userCredentials.Password);
+        return BC.Verify(userCredentials.Password, user.Password);
     }
 }

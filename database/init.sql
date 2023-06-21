@@ -34,7 +34,7 @@ INSERT INTO users (username, fullname, password) VALUES ('nharnell6', 'Nichols H
 INSERT INTO users (username, fullname, password) VALUES ('tboriston7', 'Tobe Boriston', '$2a$04$J/JVMxOpTqH2PCMsw6tvkOneUyPZULGJlmZVQl8jWCDdRL71WVzpu');
 INSERT INTO users (username, fullname, password) VALUES ('ltattersfield8', 'Luis Tattersfield', '$2a$04$.uFS9b.dOmpbzSTKGEnZeu6rswPAb3c6cbYb5qkVKLxJN0zkFNyTi');
 INSERT INTO users (username, fullname, password) VALUES ('dpillans9', 'Davis Pillans', '$2a$04$zqLdmgIjdwT.oV.DY.zIBeRTxCyDREeqopveBHr6y7lPIIt58AXwa');
-INSERT INTO users (username, fullname, password) VALUES ('samin', 'Samin Islam', '$2a$07$cCaKxEHp0RHyeEo8zPqTVeyeZnEPjaTHIppIIzBvqt7ekbr86tK5O');
+INSERT INTO users (username, fullname, password) VALUES ('samin', 'Samin Islam', '$2a$07$oWsMrmF.hT7wJbg/hBYiqukGWVcwFETihVAB6tC1popyuFusthH.q');
 
 INSERT INTO sessions (userid, sessiontoken) VALUES (1, 'aa5877db-772d-4540-a57c-cacc6da007b6');
 INSERT INTO sessions (userid, sessiontoken) VALUES (7, '3a7670c2-7a71-42a4-8c80-5b063c9e0722');

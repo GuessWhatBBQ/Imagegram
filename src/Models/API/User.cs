@@ -58,7 +58,7 @@ public class UserMapper
 
     public static ExistingUser ResponseFromModel(User user)
     {
-        var (UserId, UserName, FullName, Password) = user;
+        var (UserId, UserName, FullName, _) = user;
         return new ExistingUser
         {
             UserName = UserName,
