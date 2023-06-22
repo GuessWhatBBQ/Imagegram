@@ -24,6 +24,14 @@ CREATE TABLE image (
        postid INT REFERENCES post(id) NOT NULL
 );
 
+CREATE TABLE comment (
+       id SERIAL PRIMARY KEY,
+       postid INT REFERENCES post(id) NOT NULL,
+       creatorid INT REFERENCES users(id) NOT NULL,
+       content TEXT,
+       creationdate TIMESTAMP WITH time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO users (username, fullname, password) VALUES ('tstelle0', 'Tobi Stelle', '$2a$04$u5q4MV7rJKZjWjQoLDk8YuusN9WnzgnrzjEr.DJkKnQQAh0EVO8rK');
 INSERT INTO users (username, fullname, password) VALUES ('cbabe1', 'Coriss Babe', '$2a$04$7Z6GflUoGbd54CAQX5yzmuoUQpcFUbWSAoKNVZ4QwjW44wfncFyUS');
 INSERT INTO users (username, fullname, password) VALUES ('hnaseby2', 'Heidie Naseby', '$2a$04$IQqVs9w2tMSOV7tWicM3Y.efuCAiIRhMgw/ymVDk9Sv1rImYgfTH.');

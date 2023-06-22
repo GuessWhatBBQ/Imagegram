@@ -11,6 +11,7 @@ public class Post
     public int PostId { get; set; }
 
     [Column("creatorid")]
+    [ForeignKey("User")]
     public int CreatorId { get; set; }
 
     [Column("caption")]
