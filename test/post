@@ -1,0 +1,6 @@
+#!/bin/env bash
+
+# SessionId=`http POST http://localhost:5018/auth username="samin" password="1234" --headers | sed -n -e 's/X-Session-Id: //p'`
+SessionId='e3c593be-343f-49a5-9d35-d602d5d57316'
+
+http --form POST http://localhost:5018/post X-Session-Id:$SessionId images@test.jpg images@test.jpg creatorid=1 caption='hi guys look at this picture I took!!'
