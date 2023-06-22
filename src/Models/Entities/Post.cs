@@ -16,6 +16,8 @@ public class Post
     [Column("caption")]
     public string Caption { get; set; } = default!;
 
+    public ICollection<Image> Images { get; set; } = default!;
+
     public void Deconstruct(out int postId, out int creatorId, out string caption)
     {
         postId = PostId;

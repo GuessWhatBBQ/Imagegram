@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 using Imagegram.Repositories;
 using Imagegram.Services;
 using Imagegram.Models.Entity;
 using Imagegram.Models.API;
-using Imagegram.Exceptions.User;
 
 namespace Imagegram.Controllers;
 
@@ -14,13 +14,13 @@ namespace Imagegram.Controllers;
 public class PostController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly PostgresContext db = default!;
     private readonly PostService PostService = default!;
+    private readonly IWebHostEnvironment Environment = default!;
 
-    public PostController(ILogger<UserController> logger, DbContextOptions<PostgresContext> options)
+    public PostController(ILogger<UserController> logger, IWebHostEnvironment environment, DbContextOptions<PostgresContext> options)
     {
-        db = new PostgresContext(options);
         _logger = logger;
+        Environment = environment;
         PostService = new PostService(options);
     }
 
@@ -41,10 +41,14 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<ActionResult<Post>> CreatePostAsync([FromForm] NewPost post)
+    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
+    public async Task<IActionResult> CreatePostAsync([FromForm] NewPost post)
     {
-        Post NewPost = PostMapper.ToModel(post);
+        var imageStorageFolder = Path.Combine(Environment.WebRootPath, "images");
+        var images = await PostMapper.ImageCollectionFromFormFileCollection(post.Images, imageStorageFolder);
+        Post NewPost = PostMapper.ToModel(post, images);
         await PostService.CreateNewPost(NewPost);
-        return NewPost;
+        // return NewPost;
+        return Ok();
     }
 }

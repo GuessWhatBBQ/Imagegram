@@ -6,12 +6,13 @@ public class NewPost
 {
     public int CreatorId { get; set; } = default!;
     public string Caption { get; set; } = default!;
-    public IFormFile Image { get; set; } = default!;
+    public IFormFileCollection Images { get; set; } = default!;
 
-    public void Deconstruct(out int creatorId, out string caption)
+    public void Deconstruct(out int creatorId, out string caption, out IFormFileCollection images)
     {
         creatorId = CreatorId;
         caption = Caption;
+        images = Images;
     }
 }
 
@@ -36,10 +37,21 @@ public class ExistingPost : NewPost
 
 public class PostMapper
 {
-    public static Post ToModel(NewPost post)
+    public async static Task<ICollection<Image>> ImageCollectionFromFormFileCollection(IFormFileCollection files, string folderPath)
     {
-        var (CreatorId, Caption) = post;
-        return new Post { CreatorId = CreatorId, Caption = Caption };
+        var images = new List<Image>();
+        foreach (var Image in files)
+        {
+            var imagePath = await FileMapper.StoreFormFileAsync(folderPath, Image);
+            images.Add(new Image { ImagePath = imagePath });
+        }
+        return images;
+    }
+
+    public static Post ToModel(NewPost post, ICollection<Image> Images)
+    {
+        var (CreatorId, Caption, _) = post;
+        return new Post { CreatorId = CreatorId, Caption = Caption, Images = Images };
     }
 
     public static Post ToModel(ExistingPost post)

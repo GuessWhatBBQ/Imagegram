@@ -5,11 +5,11 @@ using Imagegram.Models.Entity;
 using Imagegram.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-public class PostService
+public class ImageService
 {
     private readonly PostgresContext db = default!;
 
-    public PostService(DbContextOptions<PostgresContext> options)
+    public ImageService(DbContextOptions<PostgresContext> options)
     {
         db = new PostgresContext(options);
     }
@@ -21,7 +21,7 @@ public class PostService
 
     public async Task<Post> GetPostById(int id)
     {
-        return await db.Posts.Include(post => post.Images).Where(post => post.PostId == id).FirstOrDefaultAsync() ?? throw new PostNotFoundException();
+        return await db.Posts.FindAsync(id) ?? throw new PostNotFoundException();
     }
 
     public async Task<Post> CreateNewPost(Post post)

@@ -9,6 +9,7 @@ public class PostgresContext : DbContext
     public DbSet<Post> Posts { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<Session> Sessions { get; set; } = default!;
+    public DbSet<Image> Image { get; set; } = default!;
 
     public PostgresContext(DbContextOptions<PostgresContext> options)
         : base(options) { }
