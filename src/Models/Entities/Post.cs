@@ -17,7 +17,11 @@ public class Post
     [Column("caption")]
     public string Caption { get; set; } = default!;
 
+    [ForeignKey("PostId")]
     public ICollection<Image> Images { get; set; } = default!;
+
+    [ForeignKey("PostId")]
+    public ICollection<Comment> Comments { get; set; } = default!;
 
     public void Deconstruct(out int postId, out int creatorId, out string caption)
     {

@@ -28,7 +28,12 @@ public class ExistingComment : NewComment
         (CommentId, PostId, CreatorId, Content, CreationDate) = comment;
     }
 
-    public void Deconstruct(out int commentId, out int postId, out int creatorId, out string content)
+    public void Deconstruct(
+        out int commentId,
+        out int postId,
+        out int creatorId,
+        out string content
+    )
     {
         commentId = CommentId;
         postId = PostId;
@@ -42,7 +47,12 @@ public class CommentMapper
     public static Comment ToModel(NewComment post)
     {
         var (postId, creatorId, content) = post;
-        return new Comment { PostId = postId, CreatorId = creatorId, Content = content };
+        return new Comment
+        {
+            PostId = postId,
+            CreatorId = creatorId,
+            Content = content
+        };
     }
 
     public static Comment ToModel(ExistingComment comment)

@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-public class CustomAuthHandler : AuthenticationHandler<CustomAuthSchemeOptions>
+public class SessionHeaderAuthHandler : AuthenticationHandler<SessionHeaderAuthSchemeOptions>
 {
     PostgresContext db = default!;
 
-    public CustomAuthHandler(
-        IOptionsMonitor<CustomAuthSchemeOptions> options,
+    public SessionHeaderAuthHandler(
+        IOptionsMonitor<SessionHeaderAuthSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
         ISystemClock clock,
@@ -50,7 +50,7 @@ public class CustomAuthHandler : AuthenticationHandler<CustomAuthSchemeOptions>
             new Claim(ClaimTypes.NameIdentifier, session.UserId.ToString()),
             new Claim(CustomClaimTypes.SessionToken, session.SessionToken)
         };
-        var claimsIdentity = new ClaimsIdentity(claims, nameof(CustomAuthHandler));
+        var claimsIdentity = new ClaimsIdentity(claims, nameof(SessionHeaderAuthHandler));
         var ticket = new AuthenticationTicket(
             new ClaimsPrincipal(claimsIdentity),
             this.Scheme.Name

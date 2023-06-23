@@ -16,8 +16,8 @@ public class Session
     [Column("sessiontoken")]
     public string SessionToken { get; set; } = default!;
 
-    [ForeignKey("UserId")]
-    public User User = default!;
+    // [ForeignKey("UserId")]
+    // public User User = default!;
 
     public void Deconstruct(out int sessionId, out int userId, out string sessionToken)
     {

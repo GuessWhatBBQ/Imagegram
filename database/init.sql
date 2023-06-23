@@ -45,3 +45,4 @@ INSERT INTO users (username, fullname, password) VALUES ('dpillans9', 'Davis Pil
 INSERT INTO users (username, fullname, password) VALUES ('samin', 'Samin Islam', '$2a$07$oWsMrmF.hT7wJbg/hBYiqukGWVcwFETihVAB6tC1popyuFusthH.q');
 
 INSERT INTO sessions (userid, sessiontoken) VALUES (11, 'e3c593be-343f-49a5-9d35-d602d5d57316');
+INSERT INTO sessions (userid, sessiontoken) VALUES (4, 'd1c3bd04-88d1-443f-bf5f-e6ff04d1e8d1');

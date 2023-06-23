@@ -21,7 +21,8 @@ public class CommentService
 
     public async Task<Comment> GetCommentByIdAsync(int id)
     {
-        return await db.Comments.Where(comment => comment.CommentId == id).FirstOrDefaultAsync() ?? throw new PostNotFoundException();
+        return await db.Comments.Where(comment => comment.CommentId == id).FirstOrDefaultAsync()
+            ?? throw new PostNotFoundException();
     }
 
     public async Task<Comment> CreateNewCommentAsync(Comment comment)
@@ -33,7 +34,9 @@ public class CommentService
 
     public async Task<Comment> UpdateCommentAsync(Comment comment)
     {
-        var Comment = await db.Comments.FindAsync(comment.CommentId) ?? new Comment { CreatorId = comment.CreatorId };
+        var Comment =
+            await db.Comments.FindAsync(comment.CommentId)
+            ?? new Comment { CreatorId = comment.CreatorId };
         Comment.Content = comment.Content;
         await db.SaveChangesAsync();
         return Comment;

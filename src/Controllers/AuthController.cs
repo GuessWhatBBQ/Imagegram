@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpDelete("all")]
-    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
+    [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<Session>> LogoutAllSessions(int id)
     {
         Claim UserIdClaim = User.Claims
@@ -66,7 +66,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpDelete("")]
-    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
+    [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<Session>> LogoutCurrentSession(int id)
     {
         Claim SessionTokenClaim = User.Claims

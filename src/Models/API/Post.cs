@@ -37,7 +37,10 @@ public class ExistingPost : NewPost
 
 public class PostMapper
 {
-    public async static Task<ICollection<Image>> ImageCollectionFromFormFileCollection(IFormFileCollection files, string folderPath)
+    public async static Task<ICollection<Image>> ImageCollectionFromFormFileCollection(
+        IFormFileCollection files,
+        string folderPath
+    )
     {
         var images = new List<Image>();
         foreach (var Image in files)
@@ -51,7 +54,12 @@ public class PostMapper
     public static Post ToModel(NewPost post, ICollection<Image> Images)
     {
         var (CreatorId, Caption, _) = post;
-        return new Post { CreatorId = CreatorId, Caption = Caption, Images = Images };
+        return new Post
+        {
+            CreatorId = CreatorId,
+            Caption = Caption,
+            Images = Images
+        };
     }
 
     public static Post ToModel(ExistingPost post)

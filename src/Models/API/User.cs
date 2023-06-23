@@ -27,7 +27,12 @@ public class ExistingUser : NewUser
         (UserId, UserName, FullName, Password) = user;
     }
 
-    public void Deconstruct(out int userId, out string userName, out string fullName, out string password)
+    public void Deconstruct(
+        out int userId,
+        out string userName,
+        out string fullName,
+        out string password
+    )
     {
         userId = UserId;
         userName = UserName;
@@ -41,7 +46,12 @@ public class UserMapper
     public static User ToModel(NewUser user)
     {
         var (UserName, FullName, Password) = user;
-        return new User { UserName = UserName, FullName = FullName, Password = Password };
+        return new User
+        {
+            UserName = UserName,
+            FullName = FullName,
+            Password = Password
+        };
     }
 
     public static User ToModel(ExistingUser user)

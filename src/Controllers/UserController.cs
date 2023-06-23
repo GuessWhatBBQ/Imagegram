@@ -33,12 +33,26 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
+    [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<User>> GetUserAsync(int id)
     {
         try
         {
             ExistingUser User = new ExistingUser(await UserService.GetUserById(id));
+            return Ok(User);
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpGet("{id}/post")]
+    public async Task<ActionResult<User>> GetAllPostsByUserAsync(int id)
+    {
+        try
+        {
+            User User = await UserService.GetAllPostsByUserId(id);
             return Ok(User);
         }
         catch (UserNotFoundException)

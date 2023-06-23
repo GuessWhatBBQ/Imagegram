@@ -22,7 +22,13 @@ public class Comment
     [Column("creationdate")]
     public DateTime CreationDate { get; set; }
 
-    public void Deconstruct(out int commentId, out int postId, out int creatorId, out string content, out DateTime creationDate)
+    public void Deconstruct(
+        out int commentId,
+        out int postId,
+        out int creatorId,
+        out string content,
+        out DateTime creationDate
+    )
     {
         commentId = CommentId;
         postId = PostId;

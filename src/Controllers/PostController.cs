@@ -6,6 +6,7 @@ using Imagegram.Repositories;
 using Imagegram.Services;
 using Imagegram.Models.Entity;
 using Imagegram.Models.API;
+using Imagegram.Exceptions.File;
 
 namespace Imagegram.Controllers;
 
@@ -17,7 +18,11 @@ public class PostController : ControllerBase
     private readonly PostService PostService = default!;
     private readonly IWebHostEnvironment Environment = default!;
 
-    public PostController(ILogger<UserController> logger, IWebHostEnvironment environment, DbContextOptions<PostgresContext> options)
+    public PostController(
+        ILogger<UserController> logger,
+        IWebHostEnvironment environment,
+        DbContextOptions<PostgresContext> options
+    )
     {
         _logger = logger;
         Environment = environment;
@@ -41,14 +46,22 @@ public class PostController : ControllerBase
     }
 
     [HttpPost("")]
-    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
-    public async Task<IActionResult> CreatePostAsync([FromForm] NewPost post)
+    [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
+    public async Task<ActionResult<ExistingPost>> CreatePostAsync([FromForm] NewPost post)
     {
         var imageStorageFolder = Path.Combine(Environment.WebRootPath, "images");
-        var images = await PostMapper.ImageCollectionFromFormFileCollection(post.Images, imageStorageFolder);
-        Post NewPost = PostMapper.ToModel(post, images);
-        await PostService.CreateNewPost(NewPost);
-        // return NewPost;
-        return Ok();
+        try
+        {
+            var images = await PostMapper.ImageCollectionFromFormFileCollection(
+                post.Images,
+                imageStorageFolder
+            );
+            Post NewPost = await PostService.CreateNewPost(PostMapper.ToModel(post, images));
+            return Ok(PostMapper.FromModel(NewPost));
+        }
+        catch (ImageFileFormatException)
+        {
+            return new UnsupportedMediaTypeResult();
+        }
     }
 }

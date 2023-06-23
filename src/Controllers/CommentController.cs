@@ -6,6 +6,7 @@ using Imagegram.Repositories;
 using Imagegram.Services;
 using Imagegram.Models.Entity;
 using Imagegram.Models.API;
+using System.Security.Claims;
 
 namespace Imagegram.Controllers;
 
@@ -16,7 +17,11 @@ public class CommentController : ControllerBase
     private readonly ILogger<UserController> _logger;
     private readonly CommentService commentService = default!;
 
-    public CommentController(ILogger<UserController> logger, IWebHostEnvironment environment, DbContextOptions<PostgresContext> options)
+    public CommentController(
+        ILogger<UserController> logger,
+        IWebHostEnvironment environment,
+        DbContextOptions<PostgresContext> options
+    )
     {
         _logger = logger;
         commentService = new CommentService(options);
@@ -26,8 +31,9 @@ public class CommentController : ControllerBase
     public async Task<ActionResult<IEnumerable<ExistingComment>>> GetAllCommentAsync()
     {
         var Comments =
-            (await commentService.GetAllCommentsAsync()).Select(comment => new ExistingComment(comment)).ToList()
-            ?? new List<ExistingComment>();
+            (await commentService.GetAllCommentsAsync())
+                .Select(comment => new ExistingComment(comment))
+                .ToList() ?? new List<ExistingComment>();
         return Ok(Comments);
     }
 
@@ -39,9 +45,14 @@ public class CommentController : ControllerBase
     }
 
     [HttpPost("")]
-    [Authorize(AuthenticationSchemes = nameof(CustomAuthHandler))]
+    [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<ExistingComment>> CreateCommentAsync(NewComment comment)
     {
+        Claim UserIdClaim = User.Claims
+            .Where(claim => claim.Type == ClaimTypes.NameIdentifier)
+            .First();
+        int UserId = int.Parse(UserIdClaim.Value);
+        comment.CreatorId = UserId;
         var NewComment = await commentService.CreateNewCommentAsync(CommentMapper.ToModel(comment));
         return Ok(CommentMapper.FromModel(NewComment));
     }

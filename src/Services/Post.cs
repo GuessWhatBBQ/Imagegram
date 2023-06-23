@@ -21,7 +21,11 @@ public class PostService
 
     public async Task<Post> GetPostById(int id)
     {
-        return await db.Posts.Include(post => post.Images).Where(post => post.PostId == id).FirstOrDefaultAsync() ?? throw new PostNotFoundException();
+        return await db.Posts
+                .Include(post => post.Images)
+                .Include(post => post.Comments)
+                .Where(post => post.PostId == id)
+                .FirstOrDefaultAsync() ?? throw new PostNotFoundException();
     }
 
     public async Task<Post> CreateNewPost(Post post)

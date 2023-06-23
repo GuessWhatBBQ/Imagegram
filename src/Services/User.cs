@@ -71,6 +71,17 @@ public class UserService
         };
     }
 
+    public async Task<User> GetAllPostsByUserId(int id)
+    {
+        var user =
+            await db.Users
+                .Include(user => user.Posts)
+                .ThenInclude(post => post.Comments)
+                .Where(user => user.UserId == id)
+                .FirstOrDefaultAsync() ?? throw new UserNotFoundException();
+        return user;
+    }
+
     private bool isValidPassword(User user, AuthCredentials userCredentials)
     {
         return BC.Verify(userCredentials.Password, user.Password);
