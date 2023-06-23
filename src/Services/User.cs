@@ -46,9 +46,9 @@ public class UserService
         return User;
     }
 
-    public async Task<User> DeleteUser(User user)
+    public async Task<User> DeleteUser(int id)
     {
-        var User = await db.Users.FindAsync(user.UserId) ?? throw new UserNotFoundException();
+        var User = await db.Users.FindAsync(id) ?? throw new UserNotFoundException();
         db.Users.Remove(User);
         await db.SaveChangesAsync();
         return User;

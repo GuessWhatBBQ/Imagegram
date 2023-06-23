@@ -47,6 +47,21 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpDelete("{id}")]
+    [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
+    public async Task<ActionResult<User>> DeleteUserAsync(int id)
+    {
+        try
+        {
+            ExistingUser User = new ExistingUser(await UserService.DeleteUser(id));
+            return Ok(User);
+        }
+        catch (UserNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
     [HttpGet("{id}/post")]
     public async Task<ActionResult<User>> GetAllPostsByUserAsync(int id)
     {

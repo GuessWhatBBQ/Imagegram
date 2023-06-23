@@ -8,26 +8,26 @@ CREATE TABLE users (
 CREATE TABLE post (
        id SERIAL PRIMARY KEY,
        caption TEXT NOT NULL,
-       creatorid INT REFERENCES users(id) NOT NULL,
+       creatorid INT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
        creationdate TIMESTAMP WITH time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE sessions (
        id SERIAL PRIMARY KEY,
-       userid INT REFERENCES users(id) NOT NULL,
+       userid INT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
        sessiontoken TEXT NOT NULL
 );
 
 CREATE TABLE image (
        id SERIAL PRIMARY KEY,
        imagepath text NOT NULL,
-       postid INT REFERENCES post(id) NOT NULL
+       postid INT REFERENCES post(id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE comment (
        id SERIAL PRIMARY KEY,
-       postid INT REFERENCES post(id) NOT NULL,
-       creatorid INT REFERENCES users(id) NOT NULL,
+       postid INT REFERENCES post(id) ON DELETE CASCADE NOT NULL,
+       creatorid INT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
        content TEXT,
        creationdate TIMESTAMP WITH time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
