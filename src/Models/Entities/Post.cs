@@ -17,6 +17,9 @@ public class Post
     [Column("caption")]
     public string Caption { get; set; } = default!;
 
+    [Column("creationdate")]
+    public DateTime CreationDate { get; set; }
+
     [ForeignKey("PostId")]
     public ICollection<Image> Images { get; set; } = default!;
 

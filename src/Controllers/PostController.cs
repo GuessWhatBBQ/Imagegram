@@ -52,7 +52,7 @@ public class PostController : ControllerBase
         var imageStorageFolder = Path.Combine(Environment.WebRootPath, "images");
         try
         {
-            var images = await PostMapper.ImageCollectionFromFormFileCollection(
+            var images = PostMapper.ImageCollectionFromFormFileCollection(
                 post.Images,
                 imageStorageFolder
             );

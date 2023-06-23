@@ -1,6 +1,7 @@
-using Imagegram.Models.Entity;
 
 namespace Imagegram.Models.API;
+
+using Imagegram.Models.Entity;
 
 public class NewPost
 {
@@ -37,7 +38,7 @@ public class ExistingPost : NewPost
 
 public class PostMapper
 {
-    public async static Task<ICollection<Image>> ImageCollectionFromFormFileCollection(
+    public static ICollection<Image> ImageCollectionFromFormFileCollection(
         IFormFileCollection files,
         string folderPath
     )
@@ -45,7 +46,7 @@ public class PostMapper
         var images = new List<Image>();
         foreach (var Image in files)
         {
-            var imagePath = await FileMapper.StoreFormFileAsync(folderPath, Image);
+            var imagePath = FileMapper.StoreFormFileAsync(folderPath, Image);
             images.Add(new Image { ImagePath = imagePath });
         }
         return images;

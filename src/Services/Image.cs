@@ -1,6 +1,6 @@
 namespace Imagegram.Services;
 
-using Imagegram.Exceptions.Post;
+using Imagegram.Exceptions.Image;
 using Imagegram.Models.Entity;
 using Imagegram.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -14,36 +14,36 @@ public class ImageService
         db = new PostgresContext(options);
     }
 
-    public async Task<IEnumerable<Post>> GetAllPosts()
+    public async Task<IEnumerable<Image>> GetAllImages()
     {
-        return await db.Posts.ToListAsync();
+        return await db.Images.ToListAsync();
     }
 
-    public async Task<Post> GetPostById(int id)
+    public async Task<Image> GetImageById(int id)
     {
-        return await db.Posts.FindAsync(id) ?? throw new PostNotFoundException();
+        return await db.Images.FindAsync(id) ?? throw new ImageNotFoundException();
     }
 
-    public async Task<Post> CreateNewPost(Post post)
+    public async Task<Image> CreateNewPost(Image image)
     {
-        var NewPost = await db.AddAsync(post);
+        var NewImage = await db.AddAsync(image);
         await db.SaveChangesAsync();
-        return NewPost.Entity;
+        return NewImage.Entity;
     }
 
-    public async Task<Post> UpdatePost(Post post)
+    public async Task<Image> UpdatePost(Image image)
     {
-        var Post = await db.Posts.FindAsync(post.PostId) ?? new Post { CreatorId = post.CreatorId };
-        Post.Caption = post.Caption;
+        var Image = await db.Images.FindAsync(image.ImageId) ?? throw new ImageNotFoundException();
+        Image.ImagePath = image.ImagePath;
         await db.SaveChangesAsync();
-        return Post;
+        return Image;
     }
 
-    public async Task<Post> DeletePost(Post post)
+    public async Task<Image> DeletePost(Image image)
     {
-        var Post = await GetPostById(post.PostId);
-        db.Posts.Remove(Post);
+        var Image = await GetImageById(image.ImageId);
+        db.Images.Remove(Image);
         await db.SaveChangesAsync();
-        return Post;
+        return Image;
     }
 }

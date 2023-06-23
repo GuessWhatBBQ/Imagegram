@@ -27,6 +27,7 @@ public class CommentService
 
     public async Task<Comment> CreateNewCommentAsync(Comment comment)
     {
+        comment.CreationDate = DateTime.UtcNow;
         var NewComment = await db.AddAsync(comment);
         await db.SaveChangesAsync();
         return NewComment.Entity;

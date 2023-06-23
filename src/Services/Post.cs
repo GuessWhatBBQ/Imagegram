@@ -30,6 +30,7 @@ public class PostService
 
     public async Task<Post> CreateNewPost(Post post)
     {
+        post.CreationDate = DateTime.UtcNow;
         var NewPost = await db.AddAsync(post);
         await db.SaveChangesAsync();
         return NewPost.Entity;
