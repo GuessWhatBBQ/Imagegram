@@ -76,7 +76,7 @@ public class UserService
         var user =
             await db.Users
                 .Include(user => user.Posts)
-                .ThenInclude(post => post.Comments)
+                .ThenInclude(post => post.Comments.OrderByDescending(comment => comment.CreationDate).Take(2))
                 .Where(user => user.UserId == id)
                 .FirstOrDefaultAsync() ?? throw new UserNotFoundException();
         return user;
