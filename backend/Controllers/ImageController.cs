@@ -15,7 +15,10 @@ public class ImageController : ControllerBase
     private readonly ILogger<ImageController> _logger;
     private readonly ImageService ImageService;
 
-    public ImageController(ILogger<ImageController> logger, DbContextOptions<PostgresContext> options)
+    public ImageController(
+        ILogger<ImageController> logger,
+        DbContextOptions<PostgresContext> options
+    )
     {
         _logger = logger;
         ImageService = new ImageService(options);

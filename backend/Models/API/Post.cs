@@ -1,4 +1,3 @@
-
 namespace Imagegram.Models.API;
 
 using Imagegram.Models.Entity;

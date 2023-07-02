@@ -14,6 +14,8 @@ public class ImageService
         db = new PostgresContext(options);
     }
 
+    public ImageService() { }
+
     public async Task<IEnumerable<Image>> GetAllImages()
     {
         return await db.Images.ToListAsync();

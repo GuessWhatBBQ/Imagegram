@@ -5,8 +5,16 @@ using Imagegram.Helpers.File;
 
 public static class MimeTypes
 {
-    public static readonly IEnumerable<string> AcceptableImageTypes = new List<string> { "image/jpeg", "image/png", "image/bmp" };
-    public static readonly IEnumerable<string> StorageImageTypes = new List<string> { "image/jpeg" };
+    public static readonly IEnumerable<string> AcceptableImageTypes = new List<string>
+    {
+        "image/jpeg",
+        "image/png",
+        "image/bmp"
+    };
+    public static readonly IEnumerable<string> StorageImageTypes = new List<string>
+    {
+        "image/jpeg"
+    };
 }
 
 public class FileMapper
