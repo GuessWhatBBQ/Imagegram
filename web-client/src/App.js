@@ -3,6 +3,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login/Login";
+import Feed from "./pages/Feed/Feed";
 
 const App = () => {
   return (
@@ -13,6 +14,9 @@ const App = () => {
       {/* </Route> */}
       <Route path="/login">
         <Route path="" element={<Login />}></Route>
+      </Route>
+      <Route path="/feed">
+        <Route path="" element={<Feed />}></Route>
       </Route>
     </Routes>
   );
