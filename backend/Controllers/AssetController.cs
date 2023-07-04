@@ -10,13 +10,13 @@ using Imagegram.Exceptions.Image;
 
 [ApiController]
 [Route("[controller]")]
-public class ImageController : ControllerBase
+public class AssetController : ControllerBase
 {
-    private readonly ILogger<ImageController> _logger;
+    private readonly ILogger<AssetController> _logger;
     private readonly ImageService ImageService;
 
-    public ImageController(
-        ILogger<ImageController> logger,
+    public AssetController(
+        ILogger<AssetController> logger,
         DbContextOptions<PostgresContext> options
     )
     {
@@ -24,20 +24,15 @@ public class ImageController : ControllerBase
         ImageService = new ImageService(options);
     }
 
-    [HttpGet("")]
-    public async Task<ActionResult<IEnumerable<Image>>> GetAllImagesAsync()
-    {
-        var Images = (await ImageService.GetAllImages()).ToList();
-        return Images;
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Image>> GetImageById(int id)
+    [HttpGet("image/{id}")]
+    public async Task<ActionResult> GetImageById(int id)
     {
         try
         {
             Image Image = await ImageService.GetImageById(id);
-            return Ok(Image);
+            var mimeType = "image/jpg";
+            var fileStream = new FileStream(Image.ImagePath, FileMode.Open);
+            return new FileStreamResult(fileStream, mimeType);
         }
         catch (ImageNotFoundException)
         {

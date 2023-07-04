@@ -15,7 +15,7 @@ public class FeedService
 
     public async Task<IEnumerable<Post>> GetFeedAfterTime(DateTime after)
     {
-        return await db.Posts.Where(post => post.CreationDate >= after).ToListAsync();
+        return await db.Posts.Include(post => post.Images).Where(post => post.CreationDate >= after).ToListAsync();
     }
 
     public async Task<IEnumerable<Post>> GetPaginatedFeedAfterTime(

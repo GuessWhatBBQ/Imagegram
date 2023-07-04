@@ -49,7 +49,7 @@ public class FeedController : ControllerBase
         var (after, skip, size) = queryParams;
         var Posts =
             (await FeedService.GetPaginatedFeedAfterTime(after, skip, size)).Select(
-                post => new ExistingPost(post)
+                post => PostMapper.FromModel(post)
             ) ?? new List<ExistingPost>();
         return Ok(Posts);
     }

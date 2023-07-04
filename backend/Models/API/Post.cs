@@ -16,15 +16,25 @@ public class NewPost
     }
 }
 
-public class ExistingPost : NewPost
+public class ExistingPost
 {
+    public int CreatorId { get; set; } = default!;
+    public string Caption { get; set; } = default!;
+
+    public class Image
+    {
+        public int Id { get; set; }
+    }
+
+    public IEnumerable<Image> Images { get; set; } = default!;
+
     public int PostId { get; set; }
 
     public ExistingPost() { }
 
     public ExistingPost(Post post)
     {
-        (PostId, CreatorId, Caption) = post;
+        (PostId, CreatorId, Caption, _) = post;
     }
 
     public void Deconstruct(out int postId, out int creatorId, out string caption)
@@ -75,12 +85,18 @@ public class PostMapper
 
     public static ExistingPost FromModel(Post post)
     {
-        var (PostId, CreatorId, Caption) = post;
+        var (PostId, CreatorId, Caption, Images) = post;
         return new ExistingPost
         {
             PostId = PostId,
             CreatorId = CreatorId,
-            Caption = Caption
+            Caption = Caption,
+            Images = Images.Select(image => FromModel(image))
         };
+    }
+
+    public static ExistingPost.Image FromModel(Image image)
+    {
+        return new ExistingPost.Image() { Id = image.ImageId };
     }
 }

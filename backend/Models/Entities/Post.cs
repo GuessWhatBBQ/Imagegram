@@ -26,10 +26,11 @@ public class Post
     [ForeignKey("PostId")]
     public ICollection<Comment> Comments { get; set; } = default!;
 
-    public void Deconstruct(out int postId, out int creatorId, out string caption)
+    public void Deconstruct(out int postId, out int creatorId, out string caption, out ICollection<Image> images)
     {
         postId = PostId;
         creatorId = CreatorId;
         caption = Caption;
+        images = Images;
     }
 }
