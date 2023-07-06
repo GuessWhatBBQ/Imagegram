@@ -5,10 +5,10 @@ User2='d1c3bd04-88d1-443f-bf5f-e6ff04d1e8d1'
 
 # SessionId=`http POST http://localhost:5018/auth username="samin" password="1234" --headers | sed -n -e 's/X-Session-Id: //p'`
 SessionId=$User1
-http --ignore-stdin --form POST http://localhost:5018/post X-Session-Id:$SessionId images@test.jpg images@test.jpg creatorid=11 caption='hi guys look at this picture I took!!'
+http --ignore-stdin --form POST http://localhost:5018/post X-Session-Id:$SessionId images@test5.jpg images@test4.jpg images@test3.bmp creatorid=11 caption='hi guys look at this picture I took!!'
 
 SessionId=$User2
-http --ignore-stdin --form POST http://localhost:5018/post X-Session-Id:$SessionId images@test.jpg images@test2.png creatorid=4 caption='no check my one out'
+http --ignore-stdin --form POST http://localhost:5018/post X-Session-Id:$SessionId images@test.jpg images@test2.png images@test3.png creatorid=4 caption='no check my one out'
 
 SessionId=$User2
 http --ignore-stdin POST http://localhost:5018/comment X-Session-Id:$SessionId creatorid=4 postid=1 content='this picture is ugly'
