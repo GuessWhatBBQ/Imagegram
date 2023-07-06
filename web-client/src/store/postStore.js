@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { postClient } from "../client";
+import { commentClient } from "../client";
 
 const persistConfig = {
   name: "post-storage",
@@ -14,11 +15,28 @@ const fetchActionBuilder = (set) => async (criteria) => {
   set(() => ({ posts }));
 };
 
+const createCommentActionBuilder = (set) => async (comment, onSuccess) => {
+  comment = await commentClient
+    .createComment(comment)
+    .then((response) => response.data);
+  set(({ posts }) => {
+    return {
+      posts: posts.map((post) =>
+        post.postId === comment.postId
+          ? { ...post, comments: [...post.comments, comment] }
+          : post
+      ),
+    };
+  });
+  onSuccess();
+};
+
 const usePostStore = create(
   persist(
     (set) => ({
       posts: [],
       fetch: fetchActionBuilder(set),
+      createComment: createCommentActionBuilder(set),
     }),
     persistConfig
   )

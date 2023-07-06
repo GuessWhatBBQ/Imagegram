@@ -19,4 +19,11 @@ base.interceptors.request.use((request) => {
   return request;
 });
 
-export { base };
+const XHRClientInterceptor = (/** @type XMLHttpRequest */ xhr) => {
+  const {
+    session: { id: xSessionId },
+  } = useUserStore.getState();
+  xhr.setRequestHeader("X-Session-Id", xSessionId);
+};
+
+export { base, XHRClientInterceptor };

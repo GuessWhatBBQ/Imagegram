@@ -21,6 +21,7 @@ export default function Feed() {
         caption={caption}
         images={images}
         comments={comments}
+        postId={postId}
       />
     );
   });

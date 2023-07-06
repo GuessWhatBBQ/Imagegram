@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Galleria } from "primereact/galleria";
 import Comments from "../Comments/Comments";
+import NewComment from "../NewComment/NewComment";
 
-export default function Post({ images, caption, comments }) {
+export default function Post({ images, caption, comments, postId }) {
   const itemTemplate = (item) => {
     return (
       <img
@@ -46,6 +47,7 @@ export default function Post({ images, caption, comments }) {
       />
       <p>{caption}</p>
       <Comments comments={comments} />
+      <NewComment postId={postId} />
     </div>
   );
 }
