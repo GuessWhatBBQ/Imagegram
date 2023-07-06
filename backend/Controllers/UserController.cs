@@ -79,7 +79,19 @@ public class UserController : ControllerBase
     [HttpPost("")]
     public async Task<ActionResult<ExistingUser>> CreateAccountAsync(NewUser user)
     {
-        var NewUser = await UserService.CreateNewUser(UserMapper.ToModel(user));
-        return UserMapper.ResponseFromModel(NewUser);
+        try
+        {
+            var NewUser = await UserService.CreateNewUser(UserMapper.ToModel(user));
+            return UserMapper.ResponseFromModel(NewUser);
+        }
+        catch (UsernameAlreadyTaken)
+        {
+            return Problem(
+                title: "Username must be unique",
+                detail: $"Username '{user.UserName}' already taken",
+                statusCode: StatusCodes.Status403Forbidden,
+                instance: HttpContext.Request.Path
+            );
+        }
     }
 }

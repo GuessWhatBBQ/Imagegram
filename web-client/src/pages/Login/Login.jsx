@@ -16,9 +16,11 @@ export default function Login() {
 
   const { login } = useUserStore(({ login }) => ({ login }));
 
-  const handleSubmitClick = () => {
-    login({ username, password });
-    navigate("/feed");
+  const handleSubmitClick = async () => {
+    const onSuccess = () => {
+      navigate("/feed");
+    };
+    await login({ username, password }, onSuccess);
   };
 
   return (

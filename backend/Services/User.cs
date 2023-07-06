@@ -8,6 +8,7 @@ using Imagegram.Repositories;
 using Imagegram.Exceptions.User;
 using Imagegram.Models.API;
 using Imagegram.Config.BCrypt;
+using Npgsql;
 
 public class UserService
 {
@@ -30,10 +31,21 @@ public class UserService
 
     public async Task<User> CreateNewUser(User User)
     {
-        var NewUser = await db.AddAsync(User);
-        NewUser.Entity.Password = BC.HashPassword(User.Password, workFactor: BCryptConfig.Cost);
-        await db.SaveChangesAsync();
-        return NewUser.Entity;
+        try
+        {
+            var NewUser = await db.AddAsync(User);
+            NewUser.Entity.Password = BC.HashPassword(User.Password, workFactor: BCryptConfig.Cost);
+            await db.SaveChangesAsync();
+            return NewUser.Entity;
+        }
+        catch (DbUpdateException exception)
+        {
+            if ((exception.InnerException as PostgresException).SqlState == PostgresErrorCodes.UniqueViolation)
+            {
+                throw new UsernameAlreadyTaken();
+            }
+            throw;
+        }
     }
 
     public async Task<User> UpdateUser(User user)

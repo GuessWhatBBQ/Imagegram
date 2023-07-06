@@ -15,11 +15,20 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
-  const { signup } = useUserStore(({ signup }) => ({ signup }));
+  const { signup, error, login } = useUserStore(({ signup, error, login }) => ({
+    signup,
+    error,
+    login,
+  }));
 
-  const handleSubmitClick = () => {
-    signup({ username, fullname, password });
-    navigate("/feed");
+  const handleSubmitClick = async () => {
+    const onLoginSuccess = () => {
+      navigate("/feed");
+    };
+    const onSignupSuccess = async () => {
+      await login({ username, password }, onLoginSuccess);
+    };
+    await signup({ username, fullname, password }, onSignupSuccess);
   };
 
   return (
@@ -57,6 +66,7 @@ export default function Signup() {
             <label htmlFor="password">Password</label>
           </span>
         </div>
+        <p>{error}</p>
         <div className="flex justify-content-end mt-3">
           <Button
             className="border-round-xl"
