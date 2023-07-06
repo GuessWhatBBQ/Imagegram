@@ -42,13 +42,11 @@ public class FeedController : ControllerBase
     }
 
     [HttpGet()]
-    public async Task<ActionResult<IEnumerable<ExistingPost>>> GetAllPostAsync(
-        [FromQuery] FeedQueryParams queryParams
-    )
+    public async Task<ActionResult<Post>> GetAllPostAsync([FromQuery] FeedQueryParams queryParams)
     {
         var (after, skip, size) = queryParams;
         var Posts =
-            (await FeedService.GetPaginatedFeedAfterTime(after, skip, size)).Select(
+            (await FeedService.GetPaginatedFeedAfterTime(after, size, skip)).Select(
                 post => PostMapper.FromModel(post)
             ) ?? new List<ExistingPost>();
         return Ok(Posts);

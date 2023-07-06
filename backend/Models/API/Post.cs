@@ -26,16 +26,19 @@ public class ExistingPost
         public int Id { get; set; }
     }
 
+    public class Comment
+    {
+        public string Content { get; set; } = default!;
+        public DateTime CreationDate { get; set; }
+        public int Id { get; set; }
+    }
+
     public IEnumerable<Image> Images { get; set; } = default!;
+    public IEnumerable<Comment> Comments { get; set; } = default!;
 
     public int PostId { get; set; }
 
     public ExistingPost() { }
-
-    public ExistingPost(Post post)
-    {
-        (PostId, CreatorId, Caption, _) = post;
-    }
 
     public void Deconstruct(out int postId, out int creatorId, out string caption)
     {
@@ -85,18 +88,29 @@ public class PostMapper
 
     public static ExistingPost FromModel(Post post)
     {
-        var (PostId, CreatorId, Caption, Images) = post;
+        var (PostId, CreatorId, Caption, Images, Comments) = post;
         return new ExistingPost
         {
             PostId = PostId,
             CreatorId = CreatorId,
             Caption = Caption,
-            Images = Images.Select(image => FromModel(image))
+            Images = Images.Select(image => FromModel(image)),
+            Comments = Comments.Select(comment => FromModel(comment)),
         };
     }
 
     public static ExistingPost.Image FromModel(Image image)
     {
         return new ExistingPost.Image() { Id = image.ImageId };
+    }
+
+    public static ExistingPost.Comment FromModel(Comment comment)
+    {
+        return new ExistingPost.Comment()
+        {
+            Content = comment.Content,
+            CreationDate = comment.CreationDate,
+            Id = comment.CommentId
+        };
     }
 }

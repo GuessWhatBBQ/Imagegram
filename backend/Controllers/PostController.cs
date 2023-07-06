@@ -33,7 +33,7 @@ public class PostController : ControllerBase
     public async Task<ActionResult<IEnumerable<ExistingPost>>> GetAllPostAsync()
     {
         var Posts =
-            (await PostService.GetAllPosts()).Select(post => new ExistingPost(post)).ToList()
+            (await PostService.GetAllPosts()).Select(post => PostMapper.FromModel(post)).ToList()
             ?? new List<ExistingPost>();
         return Ok(Posts);
     }

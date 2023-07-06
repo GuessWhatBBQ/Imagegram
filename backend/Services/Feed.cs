@@ -13,17 +13,24 @@ public class FeedService
         db = new PostgresContext(options);
     }
 
-    public async Task<IEnumerable<Post>> GetFeedAfterTime(DateTime after)
+    public async Task<IEnumerable<Post>> GetFeedAfterTime(DateTime after, int lastId)
     {
-        return await db.Posts.Include(post => post.Images).Where(post => post.CreationDate >= after).ToListAsync();
+        return await db.Posts
+            .Include(post => post.Images)
+            .Include(post => post.Comments.OrderByDescending(post => post.CreationDate).Take(2))
+            .OrderBy(b => b.CreationDate)
+            .ThenBy(b => b.PostId)
+            .Where(b => b.CreationDate > after || (b.CreationDate == after && b.PostId > lastId))
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Post>> GetPaginatedFeedAfterTime(
         DateTime after,
-        int skip,
-        int size
+        int size,
+        int skip = 0
     )
     {
-        return (await GetFeedAfterTime(after)).Skip(skip).Take(size);
+        var posts = (await GetFeedAfterTime(after, skip)).Take(size);
+        return posts;
     }
 }
