@@ -33,8 +33,8 @@ public class ExistingPost
         public int Id { get; set; }
     }
 
-    public IEnumerable<Image> Images { get; set; } = default!;
-    public IEnumerable<Comment> Comments { get; set; } = default!;
+    public IEnumerable<Image>? Images { get; set; } = default!;
+    public IEnumerable<Comment>? Comments { get; set; } = default!;
 
     public int PostId { get; set; }
 
@@ -94,8 +94,8 @@ public class PostMapper
             PostId = PostId,
             CreatorId = CreatorId,
             Caption = Caption,
-            Images = Images.Select(image => FromModel(image)),
-            Comments = Comments.Select(comment => FromModel(comment)),
+            Images = Images?.Select(image => FromModel(image)),
+            Comments = Comments?.Select(comment => FromModel(comment)),
         };
     }
 
