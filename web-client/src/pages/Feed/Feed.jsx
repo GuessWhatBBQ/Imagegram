@@ -14,9 +14,15 @@ export default function Feed() {
   }, []);
 
   const postsView = posts.map((post) => {
-    const { caption, images, postId } = post;
-    console.log(post);
-    return <Post key={postId} caption={caption} images={images} />;
+    const { caption, images, postId, comments } = post;
+    return (
+      <Post
+        key={postId}
+        caption={caption}
+        images={images}
+        comments={comments}
+      />
+    );
   });
 
   return <>{postsView}</>;

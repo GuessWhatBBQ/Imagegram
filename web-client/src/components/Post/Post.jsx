@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Galleria } from "primereact/galleria";
+import Comments from "../Comments/Comments";
 
-export default function Post({ images, caption }) {
+export default function Post({ images, caption, comments }) {
   const itemTemplate = (item) => {
     return (
       <img
@@ -10,7 +11,7 @@ export default function Post({ images, caption }) {
         style={{
           width: "100%",
           height: "40vh",
-          "object-fit": "contain",
+          objectFit: "contain",
           display: "block",
         }}
       />
@@ -44,6 +45,7 @@ export default function Post({ images, caption }) {
         thumbnail={thumbnailTemplate}
       />
       <p>{caption}</p>
+      <Comments comments={comments} />
     </div>
   );
 }

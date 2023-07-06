@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login/Login";
 import Feed from "./pages/Feed/Feed";
+import Signup from "./pages/Signup/Signup";
 
 const App = () => {
   return (
@@ -14,6 +15,9 @@ const App = () => {
       {/* </Route> */}
       <Route path="/login">
         <Route path="" element={<Login />}></Route>
+      </Route>
+      <Route path="/signup">
+        <Route path="" element={<Signup />}></Route>
       </Route>
       <Route path="/feed">
         <Route path="" element={<Feed />}></Route>

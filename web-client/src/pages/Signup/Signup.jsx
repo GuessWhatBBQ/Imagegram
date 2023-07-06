@@ -8,16 +8,17 @@ import { useNavigate } from "react-router-dom";
 
 import { useUserStore } from "../../store";
 
-export default function Login() {
+export default function Signup() {
   const [username, setEmail] = useState("");
+  const [fullname, setFullName] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const { login } = useUserStore(({ login }) => ({ login }));
+  const { signup } = useUserStore(({ signup }) => ({ signup }));
 
   const handleSubmitClick = () => {
-    login({ username, password });
+    signup({ username, fullname, password });
     navigate("/feed");
   };
 
@@ -36,6 +37,16 @@ export default function Login() {
         </div>
         <div className="flex align-items-center justify-content-center mt-4 p-inputtext-lg">
           <span className="p-float-label">
+            <InputText
+              id="fullname"
+              value={fullname}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+            <label htmlFor="fullname">Full name</label>
+          </span>
+        </div>
+        <div className="flex align-items-center justify-content-center mt-4 p-inputtext-lg">
+          <span className="p-float-label">
             <Password
               id="password"
               value={password}
@@ -50,7 +61,7 @@ export default function Login() {
           <Button
             className="border-round-xl"
             onClick={handleSubmitClick}
-            label="Login"
+            label="Signup"
           />
         </div>
       </div>
