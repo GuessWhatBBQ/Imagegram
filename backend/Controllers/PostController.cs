@@ -7,6 +7,7 @@ using Imagegram.Services;
 using Imagegram.Models.Entity;
 using Imagegram.Models.API;
 using Imagegram.Exceptions.File;
+using System.Security.Claims;
 
 namespace Imagegram.Controllers;
 
@@ -49,6 +50,11 @@ public class PostController : ControllerBase
     [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<ExistingPost>> CreatePostAsync([FromForm] NewPost post)
     {
+        Claim UserIdClaim = User.Claims
+            .Where(claim => claim.Type == ClaimTypes.NameIdentifier)
+            .First();
+        int userId = int.Parse(UserIdClaim.Value);
+        post.CreatorId = userId;
         var imageStorageFolder = Path.Combine(Environment.WebRootPath, "images");
         try
         {
