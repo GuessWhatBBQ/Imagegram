@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Galleria } from "primereact/galleria";
 
 import { usePostStore } from "../../store";
 import Post from "../../components/Post/Post";
@@ -16,15 +15,23 @@ export default function Feed() {
   const postsView = posts.map((post) => {
     const { caption, images, postId, comments } = post;
     return (
-      <Post
-        key={postId}
-        caption={caption}
-        images={images}
-        comments={comments}
-        postId={postId}
-      />
+      <div className="card flex justify-content-center">
+        <div className="card-container">
+          <Post
+            key={postId}
+            caption={caption}
+            images={images}
+            comments={comments}
+            postId={postId}
+          />
+        </div>
+      </div>
     );
   });
 
-  return <>{postsView}</>;
+  return (
+    <>
+      <div className="flex flex-column gap-3 my-3">{postsView}</div>
+    </>
+  );
 }

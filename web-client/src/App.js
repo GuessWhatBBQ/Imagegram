@@ -14,10 +14,6 @@ const App = () => {
 
   return (
     <Routes>
-      {/* <Route path="/feed"> */}
-      {/*   <Route path="create" element={<CreateBook />}></Route> */}
-      {/*   <Route path="" element={<ListBooks />}></Route> */}
-      {/* </Route> */}
       <Route index element={session.isLoggedIn ? <Feed /> : <Login />} />
       <Route path="/login">
         <Route path="" element={<Login />}></Route>

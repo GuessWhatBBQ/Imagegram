@@ -1,0 +1,9 @@
+.carddd {
+  background: var(--surface-hover);
+  padding: 1px;
+  border-radius: 10px;
+}
+
+.comment-text {
+  margin: 1px;
+}

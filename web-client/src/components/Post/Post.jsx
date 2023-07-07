@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Galleria } from "primereact/galleria";
+import { Card } from "primereact/card";
 import Comments from "../Comments/Comments";
 import NewComment from "../NewComment/NewComment";
 
+import "./Post.css";
+
 export default function Post({ images, caption, comments, postId }) {
+  const responsiveOptions = [
+    {
+      breakpoint: "991px",
+      numVisible: 4,
+    },
+    {
+      breakpoint: "767px",
+      numVisible: 3,
+    },
+    {
+      breakpoint: "575px",
+      numVisible: 1,
+    },
+  ];
+
   const itemTemplate = (item) => {
     return (
       <img
@@ -29,23 +47,32 @@ export default function Post({ images, caption, comments, postId }) {
     );
   };
 
-  return (
-    <div className="card">
+  const header = () => {
+    return (
       <Galleria
         value={images.map(({ id }) => ({
           itemImageSrc: `/asset/image/${id}`,
         }))}
         numVisible={5}
         circular
-        style={{ maxWidth: "640px" }}
+        className=""
+        style={{ maxWidth: "680px", minWidth: "680px" }}
         showItemNavigators
         showItemNavigatorsOnHover
         showIndicators
         showThumbnails={false}
+        responsiveOptions={responsiveOptions}
         item={itemTemplate}
         thumbnail={thumbnailTemplate}
       />
-      <p>{caption}</p>
+    );
+  };
+
+  return (
+    <div className="cardd">
+      <div className="card flex flex-column justify-content-center gap-3">
+        <Card subTitle={caption} header={header}></Card>
+      </div>
       <Comments comments={comments} />
       <NewComment postId={postId} />
     </div>
