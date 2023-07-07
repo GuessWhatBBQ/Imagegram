@@ -28,26 +28,26 @@ public class CommentService
     public async Task<Comment> CreateNewCommentAsync(Comment comment)
     {
         comment.CreationDate = DateTime.UtcNow;
-        var NewComment = await db.AddAsync(comment);
+        var newComment = await db.AddAsync(comment);
         await db.SaveChangesAsync();
-        return NewComment.Entity;
+        return newComment.Entity;
     }
 
     public async Task<Comment> UpdateCommentAsync(Comment comment)
     {
-        var Comment =
+        var updatedComment =
             await db.Comments.FindAsync(comment.CommentId)
             ?? new Comment { CreatorId = comment.CreatorId };
-        Comment.Content = comment.Content;
+        updatedComment.Content = comment.Content;
         await db.SaveChangesAsync();
-        return Comment;
+        return updatedComment;
     }
 
-    public async Task<Comment> DeleteCommentAsync(Comment post)
+    public async Task<Comment> DeleteCommentAsync(Comment comment)
     {
-        var Comment = await GetCommentByIdAsync(post.CommentId);
-        db.Comments.Remove(Comment);
+        var deletedComment = await GetCommentByIdAsync(comment.CommentId);
+        db.Comments.Remove(deletedComment);
         await db.SaveChangesAsync();
-        return Comment;
+        return deletedComment;
     }
 }

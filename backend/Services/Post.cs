@@ -31,24 +31,24 @@ public class PostService
     public async Task<Post> CreateNewPost(Post post)
     {
         post.CreationDate = DateTime.UtcNow;
-        var NewPost = await db.AddAsync(post);
+        var newPost = await db.AddAsync(post);
         await db.SaveChangesAsync();
-        return NewPost.Entity;
+        return newPost.Entity;
     }
 
     public async Task<Post> UpdatePost(Post post)
     {
-        var Post = await db.Posts.FindAsync(post.PostId) ?? new Post { CreatorId = post.CreatorId };
-        Post.Caption = post.Caption;
+        var updatedPost = await db.Posts.FindAsync(post.PostId) ?? new Post { CreatorId = post.CreatorId };
+        updatedPost.Caption = post.Caption;
         await db.SaveChangesAsync();
-        return Post;
+        return updatedPost;
     }
 
     public async Task<Post> DeletePost(Post post)
     {
-        var Post = await GetPostById(post.PostId);
-        db.Posts.Remove(Post);
+        var deletedPost = await GetPostById(post.PostId);
+        db.Posts.Remove(deletedPost);
         await db.SaveChangesAsync();
-        return Post;
+        return deletedPost;
     }
 }

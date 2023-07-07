@@ -33,10 +33,10 @@ public class UserService
     {
         try
         {
-            var NewUser = await db.AddAsync(User);
-            NewUser.Entity.Password = BC.HashPassword(User.Password, workFactor: BCryptConfig.Cost);
+            var newUser = await db.AddAsync(User);
+            newUser.Entity.Password = BC.HashPassword(User.Password, workFactor: BCryptConfig.Cost);
             await db.SaveChangesAsync();
-            return NewUser.Entity;
+            return newUser.Entity;
         }
         catch (DbUpdateException exception)
         {
@@ -50,34 +50,34 @@ public class UserService
 
     public async Task<User> UpdateUser(User user)
     {
-        var User = await db.Users.FindAsync(user.UserId) ?? throw new UserNotFoundException();
-        User.FullName = user.FullName;
-        User.UserName = user.UserName;
-        User.Password = user.Password;
+        var updatedUser = await db.Users.FindAsync(user.UserId) ?? throw new UserNotFoundException();
+        updatedUser.FullName = user.FullName;
+        updatedUser.UserName = user.UserName;
+        updatedUser.Password = user.Password;
         await db.SaveChangesAsync();
-        return User;
+        return updatedUser;
     }
 
     public async Task<User> DeleteUser(int id)
     {
-        var User = await db.Users.FindAsync(id) ?? throw new UserNotFoundException();
-        db.Users.Remove(User);
+        var deletedUser = await db.Users.FindAsync(id) ?? throw new UserNotFoundException();
+        db.Users.Remove(deletedUser);
         await db.SaveChangesAsync();
-        return User;
+        return deletedUser;
     }
 
     public async Task<User> ValidateUserCredentials(AuthCredentials userCredentials)
     {
-        var User = await db.Users
+        var user = await db.Users
             .Where(user => user.UserName == userCredentials.UserName)
             .FirstOrDefaultAsync();
-        return User switch
+        return user switch
         {
             null => throw new InvalidUserCredentialsException(),
             _
-                => isValidPassword(User, userCredentials) switch
+                => isValidPassword(user, userCredentials) switch
                 {
-                    true => User,
+                    true => user,
                     false => throw new InvalidUserCredentialsException(),
                 },
         };

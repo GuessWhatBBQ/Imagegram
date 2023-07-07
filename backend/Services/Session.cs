@@ -35,34 +35,34 @@ public class SessionService
 
     public async Task<Session> CreateNewSession(User user)
     {
-        var NewSession = await db.AddAsync(
+        var newSession = await db.AddAsync(
             new Session { UserId = user.UserId, SessionToken = (Guid.NewGuid()).ToString() }
         );
         await db.SaveChangesAsync();
-        return NewSession.Entity;
+        return newSession.Entity;
     }
 
     public async Task<Session> DeleteSession(string sessionToken)
     {
-        var Session =
+        var updatedSession =
             await db.Sessions
                 .Where(session => session.SessionToken == sessionToken)
                 .FirstOrDefaultAsync() ?? throw new SessionNotFoundException();
-        db.Sessions.Remove(Session);
+        db.Sessions.Remove(updatedSession);
         await db.SaveChangesAsync();
-        return Session;
+        return updatedSession;
     }
 
     public async Task<IEnumerable<Session>> DeleteAllSessionsByUserId(int userId)
     {
-        var Sessions =
+        var deletedSessions =
             await db.Sessions.Where(session => session.UserId == userId).ToListAsync()
             ?? throw new SessionNotFoundException();
-        foreach (var Session in Sessions)
+        foreach (var Session in deletedSessions)
         {
             db.Sessions.Remove(Session);
         }
         await db.SaveChangesAsync();
-        return Sessions;
+        return deletedSessions;
     }
 }

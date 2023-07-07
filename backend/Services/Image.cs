@@ -28,24 +28,24 @@ public class ImageService
 
     public async Task<Image> CreateNewPost(Image image)
     {
-        var NewImage = await db.AddAsync(image);
+        var newImage = await db.AddAsync(image);
         await db.SaveChangesAsync();
-        return NewImage.Entity;
+        return newImage.Entity;
     }
 
     public async Task<Image> UpdatePost(Image image)
     {
-        var Image = await db.Images.FindAsync(image.ImageId) ?? throw new ImageNotFoundException();
-        Image.ImagePath = image.ImagePath;
+        var updatedImage = await db.Images.FindAsync(image.ImageId) ?? throw new ImageNotFoundException();
+        updatedImage.ImagePath = image.ImagePath;
         await db.SaveChangesAsync();
-        return Image;
+        return updatedImage;
     }
 
     public async Task<Image> DeletePost(Image image)
     {
-        var Image = await GetImageById(image.ImageId);
-        db.Images.Remove(Image);
+        var deletedImage = await GetImageById(image.ImageId);
+        db.Images.Remove(deletedImage);
         await db.SaveChangesAsync();
-        return Image;
+        return deletedImage;
     }
 }
