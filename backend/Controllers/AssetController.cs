@@ -12,16 +12,16 @@ using Imagegram.Exceptions.Image;
 [Route("[controller]")]
 public class AssetController : ControllerBase
 {
-    private readonly ILogger<AssetController> _logger;
-    private readonly ImageService ImageService;
+    private readonly ILogger<AssetController> logger;
+    private readonly ImageService imageService;
 
     public AssetController(
         ILogger<AssetController> logger,
         DbContextOptions<PostgresContext> options
     )
     {
-        _logger = logger;
-        ImageService = new ImageService(options);
+        this.logger = logger;
+        imageService = new ImageService(options);
     }
 
     [HttpGet("image/{id}")]
@@ -29,7 +29,7 @@ public class AssetController : ControllerBase
     {
         try
         {
-            Image Image = await ImageService.GetImageById(id);
+            Image Image = await imageService.GetImageById(id);
             var mimeType = "image/jpg";
             var fileStream = new FileStream(Image.ImagePath, FileMode.Open);
             return new FileStreamResult(fileStream, mimeType);

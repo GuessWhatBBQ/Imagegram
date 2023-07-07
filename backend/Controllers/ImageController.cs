@@ -12,23 +12,23 @@ using Imagegram.Exceptions.Image;
 [Route("[controller]")]
 public class ImageController : ControllerBase
 {
-    private readonly ILogger<ImageController> _logger;
-    private readonly ImageService ImageService;
+    private readonly ILogger<ImageController> logger;
+    private readonly ImageService imageService;
 
     public ImageController(
         ILogger<ImageController> logger,
         DbContextOptions<PostgresContext> options
     )
     {
-        _logger = logger;
-        ImageService = new ImageService(options);
+        this.logger = logger;
+        imageService = new ImageService(options);
     }
 
     [HttpGet("")]
     public async Task<ActionResult<IEnumerable<Image>>> GetAllImagesAsync()
     {
-        var Images = (await ImageService.GetAllImages()).ToList();
-        return Images;
+        var images = (await imageService.GetAllImages()).ToList();
+        return images;
     }
 
     [HttpGet("{id}")]
@@ -36,8 +36,8 @@ public class ImageController : ControllerBase
     {
         try
         {
-            Image Image = await ImageService.GetImageById(id);
-            return Ok(Image);
+            Image image = await imageService.GetImageById(id);
+            return Ok(image);
         }
         catch (ImageNotFoundException)
         {

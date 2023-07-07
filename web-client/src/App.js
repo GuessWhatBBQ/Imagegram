@@ -5,14 +5,20 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import Feed from "./pages/Feed/Feed";
 import Signup from "./pages/Signup/Signup";
+import { useUserStore } from "./store";
 
 const App = () => {
+  const { session } = useUserStore(({ session }) => ({
+    session,
+  }));
+
   return (
     <Routes>
       {/* <Route path="/feed"> */}
       {/*   <Route path="create" element={<CreateBook />}></Route> */}
       {/*   <Route path="" element={<ListBooks />}></Route> */}
       {/* </Route> */}
+      <Route index element={session.isLoggedIn ? <Feed /> : <Login />} />
       <Route path="/login">
         <Route path="" element={<Login />}></Route>
       </Route>

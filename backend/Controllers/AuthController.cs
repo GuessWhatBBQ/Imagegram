@@ -17,16 +17,16 @@ namespace Imagegram.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
-    private readonly SessionService SessionService;
-    private readonly UserService UserService;
+    private readonly ILogger<UserController> logger;
+    private readonly SessionService sessionService;
+    private readonly UserService userService;
     private readonly HttpClient client;
 
     public AuthController(ILogger<UserController> logger, DbContextOptions<PostgresContext> options)
     {
-        _logger = logger;
-        SessionService = new SessionService(options);
-        UserService = new UserService(options);
+        this.logger = logger;
+        sessionService = new SessionService(options);
+        userService = new UserService(options);
         client = new HttpClient();
     }
 
@@ -35,8 +35,8 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var User = await UserService.ValidateUserCredentials(credentials);
-            Session NewSession = await SessionService.CreateNewSession(User);
+            var user = await userService.ValidateUserCredentials(credentials);
+            Session newSession = await sessionService.CreateNewSession(User);
             Response.Headers.Add(CustomHeaderNames.XSessionId, NewSession.SessionToken);
             return Ok();
         }
@@ -50,14 +50,14 @@ public class AuthController : ControllerBase
     [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<Session>> LogoutAllSessions(int id)
     {
-        Claim UserIdClaim = User.Claims
+        Claim userIdClaim = User.Claims
             .Where(claim => claim.Type == ClaimTypes.NameIdentifier)
             .First();
-        int UserId = int.Parse(UserIdClaim.Value);
+        int userId = int.Parse(userIdClaim.Value);
         try
         {
-            IEnumerable<Session> Sessions = await SessionService.DeleteAllSessionsByUserId(UserId);
-            return Ok(Sessions);
+            IEnumerable<Session> sessions = await sessionService.DeleteAllSessionsByUserId(userId);
+            return Ok(sessions);
         }
         catch (UserNotFoundException)
         {
@@ -69,14 +69,14 @@ public class AuthController : ControllerBase
     [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<Session>> LogoutCurrentSession(int id)
     {
-        Claim SessionTokenClaim = User.Claims
+        Claim sessionTokenClaim = User.Claims
             .Where(claim => claim.Type == CustomClaimTypes.SessionToken)
             .First();
-        string SessionToken = SessionTokenClaim.Value;
+        string sessionToken = sessionTokenClaim.Value;
         try
         {
-            Session Session = await SessionService.DeleteSession(SessionToken);
-            return Ok(Session);
+            Session session = await sessionService.DeleteSession(sessionToken);
+            return Ok(session);
         }
         catch (UserNotFoundException)
         {

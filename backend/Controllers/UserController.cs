@@ -14,22 +14,22 @@ namespace Imagegram.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
-    private readonly UserService UserService;
+    private readonly ILogger<UserController> logger;
+    private readonly UserService userService;
 
     public UserController(ILogger<UserController> logger, DbContextOptions<PostgresContext> options)
     {
-        _logger = logger;
-        UserService = new UserService(options);
+        this.logger = logger;
+        userService = new UserService(options);
     }
 
     [HttpGet("")]
     public async Task<ActionResult<IEnumerable<ExistingUser>>> GetAllUsersAsync()
     {
-        var Users = (await UserService.GetAllUsers())
+        var users = (await userService.GetAllUsers())
             .Select(user => new ExistingUser(user))
             .ToList();
-        return Users;
+        return users;
     }
 
     [HttpGet("{id}")]
@@ -38,8 +38,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            ExistingUser User = new ExistingUser(await UserService.GetUserById(id));
-            return Ok(User);
+            ExistingUser user = new ExistingUser(await userService.GetUserById(id));
+            return Ok(user);
         }
         catch (UserNotFoundException)
         {
@@ -53,8 +53,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            ExistingUser User = new ExistingUser(await UserService.DeleteUser(id));
-            return Ok(User);
+            ExistingUser user = new ExistingUser(await userService.DeleteUser(id));
+            return Ok(user);
         }
         catch (UserNotFoundException)
         {
@@ -67,8 +67,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            User User = await UserService.GetAllPostsByUserId(id);
-            return Ok(User);
+            User user = await userService.GetAllPostsByUserId(id);
+            return Ok(user);
         }
         catch (UserNotFoundException)
         {
@@ -81,8 +81,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            var NewUser = await UserService.CreateNewUser(UserMapper.ToModel(user));
-            return UserMapper.ResponseFromModel(NewUser);
+            var newUser = await userService.CreateNewUser(UserMapper.ToModel(user));
+            return UserMapper.ResponseFromModel(newUser);
         }
         catch (UsernameAlreadyTaken)
         {

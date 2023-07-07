@@ -14,8 +14,8 @@ namespace Imagegram.Controllers;
 [Route("[controller]")]
 public class FeedController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
-    private readonly FeedService FeedService = default!;
+    private readonly ILogger<UserController> logger;
+    private readonly FeedService feedService = default!;
 
     public FeedController(
         ILogger<UserController> logger,
@@ -23,8 +23,8 @@ public class FeedController : ControllerBase
         DbContextOptions<PostgresContext> options
     )
     {
-        _logger = logger;
-        FeedService = new FeedService(options);
+        this.logger = logger;
+        feedService = new FeedService(options);
     }
 
     public class FeedQueryParams
@@ -45,10 +45,10 @@ public class FeedController : ControllerBase
     public async Task<ActionResult<Post>> GetAllPostAsync([FromQuery] FeedQueryParams queryParams)
     {
         var (after, skip, size) = queryParams;
-        var Posts =
-            (await FeedService.GetPaginatedFeedAfterTime(after, size, skip)).Select(
+        var posts =
+            (await feedService.GetPaginatedFeedAfterTime(after, size, skip)).Select(
                 post => PostMapper.FromModel(post)
             ) ?? new List<ExistingPost>();
-        return Ok(Posts);
+        return Ok(posts);
     }
 }

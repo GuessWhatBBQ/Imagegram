@@ -14,7 +14,7 @@ namespace Imagegram.Controllers;
 [Route("[controller]")]
 public class CommentController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<UserController> logger;
     private readonly CommentService commentService = default!;
 
     public CommentController(
@@ -23,18 +23,18 @@ public class CommentController : ControllerBase
         DbContextOptions<PostgresContext> options
     )
     {
-        _logger = logger;
+        this.logger = logger;
         commentService = new CommentService(options);
     }
 
     [HttpGet("")]
     public async Task<ActionResult<IEnumerable<ExistingComment>>> GetAllCommentAsync()
     {
-        var Comments =
+        var comments =
             (await commentService.GetAllCommentsAsync())
                 .Select(comment => new ExistingComment(comment))
                 .ToList() ?? new List<ExistingComment>();
-        return Ok(Comments);
+        return Ok(comments);
     }
 
     [HttpGet("{id}")]
@@ -48,12 +48,12 @@ public class CommentController : ControllerBase
     [Authorize(AuthenticationSchemes = nameof(SessionHeaderAuthHandler))]
     public async Task<ActionResult<ExistingComment>> CreateCommentAsync(NewComment comment)
     {
-        Claim UserIdClaim = User.Claims
+        Claim userIdClaim = User.Claims
             .Where(claim => claim.Type == ClaimTypes.NameIdentifier)
             .First();
-        int UserId = int.Parse(UserIdClaim.Value);
-        comment.CreatorId = UserId;
-        var NewComment = await commentService.CreateNewCommentAsync(CommentMapper.ToModel(comment));
-        return Ok(CommentMapper.FromModel(NewComment));
+        int userId = int.Parse(userIdClaim.Value);
+        comment.CreatorId = userId;
+        var newComment = await commentService.CreateNewCommentAsync(CommentMapper.ToModel(comment));
+        return Ok(CommentMapper.FromModel(newComment));
     }
 }
