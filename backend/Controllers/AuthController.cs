@@ -36,8 +36,8 @@ public class AuthController : ControllerBase
         try
         {
             var user = await userService.ValidateUserCredentials(credentials);
-            Session newSession = await sessionService.CreateNewSession(User);
-            Response.Headers.Add(CustomHeaderNames.XSessionId, NewSession.SessionToken);
+            Session newSession = await sessionService.CreateNewSession(user);
+            Response.Headers.Add(CustomHeaderNames.XSessionId, newSession.SessionToken);
             return Ok();
         }
         catch (InvalidUserCredentialsException)
